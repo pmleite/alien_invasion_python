@@ -34,13 +34,17 @@ class AlienInvasion:
     def _update_aliens(self):
         self._check_fleet_edges()
         self.aliens.update()
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("bateu")
 
     def _update_bullets(self):
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <=0:
                 self.bullets.remove(bullet)
+        self._check_bullt_alien_collisons()
 
 
+    def _check_bullt_alien_collisons(self):
         collisions = pygame.sprite.groupcollide(self.bullets,
                                                 self.aliens,
                                                 True,
