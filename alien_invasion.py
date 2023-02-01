@@ -38,7 +38,17 @@ class AlienInvasion:
     def _update_bullets(self):
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <=0:
-                self.bullets.remove(bullet)       
+                self.bullets.remove(bullet)
+
+
+        collisions = pygame.sprite.groupcollide(self.bullets,
+                                                self.aliens,
+                                                True,
+                                                True)
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
+
 
     def _check_events(self):
             for event in pygame.event.get():
@@ -114,10 +124,6 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
-
-
-
-
 
     def _update_screen(self):
         self.screen.blit(self.bg_image, (0,0))     
