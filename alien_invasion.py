@@ -22,17 +22,17 @@ class AlienInvasion:
 
         self._create_fleet()
 
-
-
-
     def run_game(self):
         while True:
             self._check_events()
             self.ship.update(self)
             self.bullets.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
 
+    def _update_aliens(self):
+        self.aliens.update()
 
     def _update_bullets(self):
         for bullet in self.bullets.copy():
