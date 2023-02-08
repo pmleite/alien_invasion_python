@@ -9,6 +9,7 @@ class Settings:
         self.caption            = "Alien Invasion by Paulo Leite"
         self.ship_speed         = 0.8
 
+
         self.bullet_speed       = 1.0
         self.bullet_width       = 900
         self.bullet_height      = 25

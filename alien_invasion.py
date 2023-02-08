@@ -6,11 +6,13 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 
 
 class AlienInvasion:
 
+    # Inicializa o jogo e cria os recursos
     def __init__(self):
         
         pygame.init()
@@ -23,6 +25,7 @@ class AlienInvasion:
 
         pygame.display.set_caption(self.settings.caption)
         self.stats       = GameStats(self)
+        self.sb          = Scoreboard(self)
         self.ship        = Ship(self)
         self.bullets     = pygame.sprite.Group()
         self.aliens      = pygame.sprite.Group()
@@ -30,6 +33,7 @@ class AlienInvasion:
         self.play_button = Button(self, "Jogar")
         self._create_fleet()
 
+    # Cria a frota de aliens
     def run_game(self):
         while True:
             self._check_events()
@@ -42,6 +46,7 @@ class AlienInvasion:
 
             self._update_screen()
     
+    # Atualiza o numerode vidas
     def _ship_hit(self):
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
@@ -54,6 +59,7 @@ class AlienInvasion:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
 
+    # Verifica se a frota de aliens chegou ao limite inferior da tela
     def _check_aliens_bottom(self):
         screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():
@@ -61,7 +67,7 @@ class AlienInvasion:
                 self._ship_hit()
                 break
 
-
+    # Atualiza a posição dos aliens
     def _update_aliens(self):
         self._check_fleet_edges()
         self.aliens.update()
@@ -71,6 +77,7 @@ class AlienInvasion:
             self._ship_hit()
         self._check_aliens_bottom()
 
+    # Deteta os limites da tela em relação aos aliens
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
             if alien.check_edges():
@@ -145,7 +152,6 @@ class AlienInvasion:
             pygame.mouse.set_visible(False)
 
 
-
     def _fire_bullet(self):
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
@@ -183,6 +189,7 @@ class AlienInvasion:
             bullet.draw_bullet()
         
         self.aliens.draw(self.screen) 
+        self.sb.show_score()
 
         if not self.stats.game_active:
             self.play_button.draw_button()
